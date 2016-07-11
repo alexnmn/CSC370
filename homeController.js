@@ -1,4 +1,6 @@
-function getTable(type,str) {
+function getTable() {
+	var type = document.forms["form"]["t"].value;
+    var str = document.forms["form"]["q"].value;
 	if (str == "") {
 		return;
 	}else { 

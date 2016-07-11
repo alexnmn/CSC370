@@ -18,8 +18,8 @@ th {text-align: left;}
 <body>
 
 <?php
-$query = $_GET['q'];
-$type = $_GET['t'];
+$query = $_REQUEST['q'];
+$type = $_REQUEST['t'];
 
 // $con = mysqli_connect('localhost','root','password','CSC370');
 // if (!$con) {
@@ -74,7 +74,7 @@ $row = array("FirstName"=>"FirstName", "LastName"=>"LastName", "Age"=>"Age", "Ho
     echo "<td>" . $row['Hometown'] . "</td>";
     echo "<td>" . $row['Job'] . "</td>";
     echo "</tr>";
-// echo "</table>";
+echo "</table>";
 // mysqli_close($con);
 ?>
 </body>

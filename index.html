@@ -2,9 +2,26 @@
 <html>
 
 <head>
+    <script>
+		function showHint() {
+			var str = document.forms["form"]["q"].value;
+			var type = document.forms["form"]["t"].value;
+		    if (str.length == 0) { 
+		        document.getElementById("txtHint").innerHTML = "";
+		        return;
+		    } else {
+		        var xmlhttp = new XMLHttpRequest();
+		        xmlhttp.onreadystatechange = function() {
+		            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		                document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+		            }
+		        };
+		        xmlhttp.open("GET", "generateTable.php?q=" + str + "&t=" + type, true);
+		        xmlhttp.send();
+		    }
+		}
+	</script>
     <title>CSC 370 Project</title>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="homeController.js"></script>
 </head>
 
 <body>
@@ -24,7 +41,7 @@
     <h1>CSC 370 Page</h1>
     <table style="width:100%; max-width:800px">
 		<tr>
-			<form id="form" onsubmit="getTable()">
+			<form id="form" onsubmit="showHint()">
 				<td>
 					<select name="t" style="padding-right:10px">
 						<option value="">Select</option>

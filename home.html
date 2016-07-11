@@ -22,36 +22,27 @@
     </div>
     <h1>CSC 370 Page</h1>
     <table style="width:100%; max-width:800px">
-			<tr>
-				<form action="generateTable.php">
-					<td>
-						<select name="t" style="padding-right:10px">
-							<option value="">Select</option>
-							<option value="1">Get User's Posts</option>
-							<option value="2">Get User's Friends' Posts</option>
-							<option value="3">Get User's Subscribed Subsaidits</option>
-							<option value="4">Get User's Favorite Posts</option>
-							<option value="5">Get User's Friends Favorite Posts</option>
-							<option value="6">Get User's Friends' Subscribed Subsaidits</option>
-						</select>
-					</td>
-					<td>
-						<span>From User: <input type="text" name="q" value=""></span>
-						<input type="submit" value="Search"/>
-					</td>
-				</form>
-			</tr>
-        <tr>
-            <th style="width:50%;">What is this?</th>
-            <th style="width:50%">A What?</th>
-        </tr>
-        <tr>
-            <td style="width:50%">
-                <p>This is a paragraph.</p>
-            </td>
-            <td style="width:50%">A GODDAMN PARAGRAPH</td>
-        </tr>
+		<tr>
+			<form id="form" onsubmit="getTable(this.t.value,this.q.value)">
+				<td>
+					<select name="t" style="padding-right:10px">
+						<option value="">Select</option>
+						<option value="1">Get User's Posts</option>
+						<option value="2">Get User's Friends' Posts</option>
+						<option value="3">Get User's Subscribed Subsaidits</option>
+						<option value="4">Get User's Favorite Posts</option>
+						<option value="5">Get User's Friends Favorite Posts</option>
+						<option value="6">Get User's Friends' Subscribed Subsaidits</option>
+					</select>
+				</td>
+				<td>
+					<span>From User: <input type="text" name="q" value=""></span>
+					<input type="submit" value="Search"/>
+				</td>
+			</form>
+		</tr>
     </table>
+    <div id="txtHint"><b>Information will apear here!</div>
 </body>
 
 </html>

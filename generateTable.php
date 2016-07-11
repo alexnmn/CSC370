@@ -21,10 +21,10 @@ th {text-align: left;}
 $query = $_GET['q'];
 $type = $_GET['t'];
 
-$con = mysqli_connect('localhost','root','password','CSC370');
-if (!$con) {
-    die('Could not connect: ' . mysqli_error($con));
-}
+// $con = mysqli_connect('localhost','root','password','CSC370');
+// if (!$con) {
+//     die('Could not connect: ' . mysqli_error($con));
+// }
 
 switch($type){
     case "1":

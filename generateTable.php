@@ -21,9 +21,10 @@ th {$text-align: left;}
 $query = $_REQUEST['q'];
 $type = $_REQUEST['t'];
 
-$sql_connection = new mysqli('localhost','main','CSC370','csc370');
+$sql_connection = new mysqli('24.108.4.82','main','CSC370','csc370');
 if ($sql_connection->connect_error) {
-    die('Could not connect: ' . $sql_connection->connect_error);
+    echo $sql_connection->errno;
+    die('Could not connect, error: '. $sql_connection->connect_errno ." ". $sql_connection->connect_error);
 }
 
 function getUserPosts($user){

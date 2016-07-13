@@ -25,77 +25,139 @@ $sql_connection = new mysqli('127.0.0.1','main','CSC370','csc370');
 if ($sql_connection->connect_error) {
     echo $sql_connection->errno;
     die('Could not connect, error: '. $sql_connection->connect_errno ." ". $sql_connection->connect_error);
-}else{ 
-    echo("Connected $type=1");
+}
+
+function getAllUsers(){
+    return "SELECT * FROM accounts;";
 }
 
 function getUserPosts($user){
-    return "SELECT * FROM accounts WHERE username = '".$user."';";
-
+    return  "SELECT posts.* FROM posts,accounts WHERE( posts.creator=accounts.id AND accounts.username = '".$user."');";
 }
 
 function getFriendsPosts($user){
-    return  "SELECT * FROM accounts WHERE username = '".$user."';";
+    return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user .") OR posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '".$user. ")';";
 }
 
-$type = '1';
+$returntype = "";
 $request = "";
 switch($type){
     case "1":
-        echo ("<div>Get User's Posts  " . $query . "</div><br>");
+        echo ("<h1>Get User's Posts  " . $query . "</h1>");
         $request = getUserPosts($query);
+        $returntype = "posts";
         break;
     case "2":
-        echo ("<div>Get User's Friends' Posts  " . $query . "</div>");
+        echo ("<h1>Get User's Friends' Posts  " . $query . "</h1>");
         $request = getFriendsPosts($query);
+        $returntype = "posts";
         break;
     case "3":
-        echo ("<div>Get User's Subscribed Subsaidits  " . $query . "</div>");
+        echo ("<h1>Get User's Subscribed Subsaidits  " . $query . "</h1>");
+        $returntype = "subsaidits";
         break;
     case "4":
-        echo ("<div>Get User's Favorite Posts  " . $query . "</div>");
+        echo ("<h1>Get User's Favorite Posts  " . $query . "</h1>");
+        $returntype = "posts";
         break;
     case "5":
-        echo ("<div>Get User's Friends Favorite Posts  " . $query . "</div>");
+        echo ("<h1>Get User's Friends Favorite Posts  " . $query . "</h1>");
+        $returntype = "posts";
         break;
     case "6":
-        echo ("<div>Get User's Friends' Subscribed Subsaidits  " . $query . "</div>");
+        echo ("<h1>Get User's Friends' Subscribed Subsaidits  " . $query . "</h1>");
+        $returntype = "subsaidits";
+        break;
+    case "7":
+        echo ("<h1>All Users</h1>");
+        $request = getAllUsers();
+        $returntype = "accounts";
         break;
 }
-echo("<br><br>");
-echo($request."<br>");
+
 if($result = $sql_connection->query($request)){
-    echo $result->num_rows;
-}else{
-    echo "Failure";
-}
-//if ($result = $sql_connection->query($request) {
     if ($result->num_rows > 0) {
-        echo "<table>
-        <tr>
-        <th>Id</th>
-        <th>Username</th>
-        <th>Reputation</th>
-        <th>Password</th>
-        </tr>";
-        while($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['username'] . "</td>";
-            echo "<td>" . $row['reputation'] . "</td>";
-            echo "<td>" . $row['password'] . "</td>";
-            echo "</tr>";
+        echo "<table>";
+        switch($returntype){
+            case "accounts":
+                echo "
+                <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Reputation</th>
+                <th>Password</th>
+                </tr>";
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row['id'] . "</td>";
+                    echo "<td>" . $row['username'] . "</td>";
+                    echo "<td>" . $row['reputation'] . "</td>";
+                    echo "<td>" . $row['password'] . "</td>";
+                    echo "</tr>";
+                }
+                break;
+            case "posts":
+                echo "
+                <tr>
+                <th>id</th>
+                <th>text</th>
+                <th>time_pub</th>
+                <th>time_edit</th>
+                <th>title</th>
+                <th>url</th>
+                <th>upvotes</th>
+                <th>downvotes</th>
+                <th>creator</th>
+                <th>subsaiddit_id</th>
+                </tr>";
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row['id'] . "</td>";
+                    echo "<td>" . $row['text'] . "</td>";
+                    echo "<td>" . $row['time_pub'] . "</td>";
+                    echo "<td>" . $row['time_edit'] . "</td>";
+                    echo "<td>" . $row['title'] . "</td>";
+                    echo "<td>" . $row['url'] . "</td>";
+                    echo "<td>" . $row['upvotes'] . "</td>";
+                    echo "<td>" . $row['downvotes'] . "</td>";
+                    echo "<td>" . $row['creator'] . "</td>";
+                    echo "<td>" . $row['subsaiddit_id'] . "</td>";
+                    echo "</tr>";
+                }
+                break;
+            case "subsaidits":
+                echo "
+                <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>description</th>
+                <th>creator</th>
+                <th>is_default</th>
+                <th>create_time</th>
+                </tr>";
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row['id'] . "</td>";
+                    echo "<td>" . $row['title'] . "</td>";
+                    echo "<td>" . $row['description'] . "</td>";
+                    echo "<td>" . $row['creator'] . "</td>";
+                    echo "<td>" . $row['is_default'] . "</td>";
+                    echo "<td>" . $row['create_time'] . "</td>";
+                    echo "</tr>";
+                }
+                break;
         }
         echo "</table>";
     } else {
         echo "0 results";
     }
-//}
+}else{
+    echo "Failure";
+}
+
 // $sql_connection.close();
 // $result = getUserPosts($query);
 // $result = update_reputation($query);
-
-
 
 ?>
 </body>

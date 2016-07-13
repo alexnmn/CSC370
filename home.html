@@ -11,14 +11,12 @@
                 document.getElementById("table").innerHTML = xmlhttp.responseText;
             }
         };
-        xmlhttp.open("GET", "index.php", true);
+        xmlhttp.open("GET", "home.php", true);
         xmlhttp.send();
     }
 
     function query(){
         var form = document.getElementById("form");
-        var t = form.t.value;
-        var q = form.q.value;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -28,7 +26,6 @@
         xmlhttp.open("GET", "generateTable.php?t=" + t + "&q=" + q, true);
         xmlhttp.send();
     }
-
     </script>
     <style>
     table {
@@ -42,31 +39,20 @@
         border: 1px solid black;
         padding: 5px;
     }
-
+    
     #query td,#query th {
         border: 1px solid black;
         padding: 5px;
     }
-
     </style>
 </head>
 
 <body onload="createTable()">
+    <form syle="align-content: right;" action="logout.php">
+            <input type="submit" value="Logout">
+    </form>
     <h1>Saiddit</h1>
     <table>
-        <tr>
-            <form action="login.php">
-                <td>
-                    Username:
-                    <input type="text" name="u" value="" />
-                </td>
-                <td>
-                    Password:
-                    <input type="text" name="p" value="" />
-                    <input type="submit" value="Login">
-                </td>
-            </form>
-        </tr>
         <tr>
             <form id="form" onsubmit="query();return false">
                 <td>

@@ -43,10 +43,8 @@ if($result = $sql_connection->query($request)){
 	echo "Error";
 }
 
-
-
 function getTopPosts(){
-    return "SELECT posts.* FROM subsaiddits,posts WHERE(posts.subsaiddit_id=subsaiddits.id AND subsaiddits.is_default=1) ORDER BY (posts.upvotes-posts.downvotes);";
+    return "SELECT posts.* FROM subsaiddits,posts WHERE(posts.subsaiddit_id=subsaiddits.id AND subsaiddits.is_default=1) ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
 $sql_connection->close();

@@ -1,22 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, td, th {
-    border: 1px solid black;
-    padding: 5px;
-}
-
-th {$text-align: left;}
-</style>
-</head>
-<body>
-
 <?php
 $query = $_REQUEST['q'];
 $type = $_REQUEST['t'];
@@ -32,11 +13,11 @@ function getAllUsers(){
 }
 
 function getUserPosts($user){
-    return  "SELECT posts.* FROM posts,accounts WHERE( posts.creator=accounts.id AND accounts.username = '".$user."');";
+    return  "SELECT posts.* FROM posts,accounts WHERE( posts.creator=accounts.id AND accounts.username = '".$user."') ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
 function getFriendsPosts($user){
-    return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
+    return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "')) ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
 function getUserSubsaidits($user){
@@ -44,52 +25,52 @@ function getUserSubsaidits($user){
 }
 
 function getUserFavoritePosts($user){
-    return "SELECT posts.* FROM posts, favourite_posts,accounts WHERE(posts.id=favourite_posts.post_id AND favourite_posts.user_id=accounts.id AND accounts.username = '" . $user . "');";
+    return "SELECT posts.* FROM posts, favourite_posts,accounts WHERE(posts.id=favourite_posts.post_id AND favourite_posts.user_id=accounts.id AND accounts.username = '" . $user . "') ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
 function getFriendsFavoritePosts($user){
-    return "SELECT posts.* FROM posts,friends,accounts,favourite_posts WHERE((posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
+    return "SELECT DISTINCT posts.* FROM posts,friends,accounts,favourite_posts WHERE((posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "')) ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
 function getFriendsSubsaidits($user){
-    return "SELECT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
+    return "SELECT DISTINCT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
 }
 
 $returntype = "";
 $request = "";
 switch($type){
     case "1":
-        echo ("<h1>Get User's Posts, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Posts, Query:" . $query . "</h3>");
         $request = getUserPosts($query);
         $returntype = "posts";
         break;
     case "2":
-        echo ("<h1>Get User's Friends' Posts, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Friends' Posts, Query:" . $query . "</h3>");
         $request = getFriendsPosts($query);
         $returntype = "posts";
         break;
     case "3":
-        echo ("<h1>Get User's Subscribed Subsaidits, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Subscribed Subsaidits, Query:" . $query . "</h3>");
         $returntype = "subsaiddits";
         $request = getUserSubsaidits($query);
         break;
     case "4":
-        echo ("<h1>Get User's Favorite Posts, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Favorite Posts, Query:" . $query . "</h3>");
         $returntype = "posts";
         $request = getUserFavoritePosts($query);
         break;
     case "5":
-        echo ("<h1>Get User's Friends Favorite Posts, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Friends Favorite Posts, Query:" . $query . "</h3>");
         $returntype = "posts";
         $request = getFriendsFavoritePosts($query);
         break;
     case "6":
-        echo ("<h1>Get User's Friends' Subscribed Subsaidits, Query:" . $query . "</h1>");
+        echo ("<h3>Get User's Friends' Subscribed Subsaidits, Query:" . $query . "</h3>");
         $returntype = "subsaiddits";
         $request = getFriendsSubsaidits($query);
         break;
     case "7":
-        echo ("<h1>All Users</h1>");
+        echo ("<h3>All Users</h3>");
         $request = getAllUsers();
         $returntype = "accounts";
         break;
@@ -172,11 +153,9 @@ if($result = $sql_connection->query($request)){
         echo "0 results";
     }
 }else{
-    echo "Failure";
+    // echo "Failure";
 }
 
 $sql_connection->close();
 
 ?>
-</body>
-</html>

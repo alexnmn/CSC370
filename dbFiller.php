@@ -27,7 +27,7 @@ if ($sql_connection->connect_error) {
 }
 
 function add_account($username,$password){
-    return "INSERT INTO accounts VALUES (NULL,".$username.",0,sha(".$password."));";
+    return "INSERT INTO accounts VALUES (NULL,".$username.",0,sha2(".$password.",0));";
 }
 
 function add_friend($id_1,$id_2){

@@ -56,8 +56,12 @@ function add_favourite($u_id,$p_id){
 }
 
 function create_comment($text, $p_id,$u_id,$c_id){
-    return "INSERT INTO comments VALUES(NULL," . "CURRENT_TIMESTAMP,'".$text."',".$p_id.",".$u_id.",".$c_id.");";
+    return "INSERT INTO comments VALUES(NULL,CURRENT_TIMESTAMP,'".$text."',".$p_id.",".$u_id.",".$c_id.");";
 }
+//
+    // function create_comment($text, $p_id,$u_id,$c_id){
+    //     return "INSERT INTO comments VALUES(NULL," . "CURRENT_TIMESTAMP,'".$text."',".$p_id.",".$u_id.",".$c_id.");";
+    // }
 
 function set_comment_reaction($c_id,$u_id,$r_value){
     update_reputation($u_id);
@@ -71,16 +75,29 @@ function set_post_reaction($p_id,$u_id,$r_value){
 }
 
 function update_reputation($u_id){
-    return "UPDATE accounts SET reputation WHERE accounts.id=" . $u_id . ";"
+    return "UPDATE accounts SET reputation=( SELECT sum(totalReactions) AS reputation FROM( SELECT sum(post_reactions.reaction) totalReactions FROM post_reactions,posts WHERE post_reactions.post_id=posts.id AND posts.creator = " . $u_id . " UNION ALL SELECT sum(comment_reactions.reaction) totalReactions FROM comment_reactions,comments WHERE comment_reactions.comment_id=comments.id AND comments.creator = " . $u_id . ") AS user_reactions) WHERE accounts.id = " . $u_id . ";";
+
 }
+//
+    // UPDATE accounts SET reputation=(
+    //     SELECT sum(totalReactions) AS reputation FROM(
+    //     SELECT sum(post_reactions.reaction) totalReactions FROM post_reactions,posts WHERE post_reactions.post_id=posts.id AND posts.creator = 8
+    //     UNION ALL
+    //     SELECT sum(comment_reactions.reaction) totalReactions FROM comment_reactions,comments WHERE comment_reactions.comment_id=comments.id AND comments.creator = 8
+    // ) AS user_reactions) WHERE accounts.id = 8;
+
 
 function update_updown_votes($p_id){
-    echo("update_updown_votes");
+    return "UPDATE posts SET upvotes=(SELECT COUNT(reaction) FROM post_reactions WHERE reaction = 1 and post_id=" .$p_id. "), downvotes=(SELECT COUNT(reaction) as downvotes FROM post_reactions WHERE reaction = -1 and post_id=" .$p_id. ") WHERE posts.id=" .$p_id. ";";
 }
+//
+    // UPDATE posts SET 
+    // upvotes=(SELECT COUNT(reaction) FROM post_reactions WHERE reaction = 1 and post_id=2), 
+    // downvotes=(SELECT COUNT(reaction) as downvotes FROM post_reactions WHERE reaction = -1 and post_id=2) WHERE posts.id=2;
 
-echo("Connected");
+    // SELECT * FROM (SELECT COUNT(reaction) as upvotes FROM post_reactions WHERE reaction = 1 and post_id=2) as up,
+    //  (SELECT COUNT(reaction) as downvotes FROM post_reactions WHERE reaction = -1 and post_id=2) as down;
 
-while(1){}
 switch($type){
     case "1":
         break;

@@ -98,3 +98,11 @@ mysql> describe subscribes;
 | subsaiddit_id | int(11) | YES  |     | NULL    |       |
 +---------------+---------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
+
+set account reputation
+	UPDATE accounts SET reputation=(
+	    SELECT sum(totalReactions) AS reputation FROM(
+	    SELECT sum(post_reactions.reaction) totalReactions FROM post_reactions,posts WHERE post_reactions.post_id=posts.id AND posts.creator = 8
+	    UNION ALL
+	    SELECT sum(comment_reactions.reaction) totalReactions FROM comment_reactions,comments WHERE comment_reactions.comment_id=comments.id AND comments.creator = 8
+	) AS user_reactions) WHERE accounts.id = 8;

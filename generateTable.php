@@ -36,37 +36,57 @@ function getUserPosts($user){
 }
 
 function getFriendsPosts($user){
-    return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user .") OR posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '".$user. ")';";
+    return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
+}
+
+function getUserSubsaidits($user){
+    return "SELECT subsaiddits.* FROM subscribes, subsaiddits,accounts WHERE(subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=accounts.id AND accounts.username = '" . $user . "');";
+}
+
+function getUserFavoritePosts($user){
+    return "SELECT posts.* FROM posts, favourite_posts,accounts WHERE(posts.id=favourite_posts.post_id AND favourite_posts.user_id=accounts.id AND accounts.username = '" . $user . "');";
+}
+
+function getFriendsFavoritePosts($user){
+    return "SELECT posts.* FROM posts,friends,accounts,favourite_posts WHERE((posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
+}
+
+function getFriendsSubsaidits($user){
+    return "SELECT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
 }
 
 $returntype = "";
 $request = "";
 switch($type){
     case "1":
-        echo ("<h1>Get User's Posts  " . $query . "</h1>");
+        echo ("<h1>Get User's Posts, Query:" . $query . "</h1>");
         $request = getUserPosts($query);
         $returntype = "posts";
         break;
     case "2":
-        echo ("<h1>Get User's Friends' Posts  " . $query . "</h1>");
+        echo ("<h1>Get User's Friends' Posts, Query:" . $query . "</h1>");
         $request = getFriendsPosts($query);
         $returntype = "posts";
         break;
     case "3":
-        echo ("<h1>Get User's Subscribed Subsaidits  " . $query . "</h1>");
-        $returntype = "subsaidits";
+        echo ("<h1>Get User's Subscribed Subsaidits, Query:" . $query . "</h1>");
+        $returntype = "subsaiddits";
+        $request = getUserSubsaidits($query);
         break;
     case "4":
-        echo ("<h1>Get User's Favorite Posts  " . $query . "</h1>");
+        echo ("<h1>Get User's Favorite Posts, Query:" . $query . "</h1>");
         $returntype = "posts";
+        $request = getUserFavoritePosts($query);
         break;
     case "5":
-        echo ("<h1>Get User's Friends Favorite Posts  " . $query . "</h1>");
+        echo ("<h1>Get User's Friends Favorite Posts, Query:" . $query . "</h1>");
         $returntype = "posts";
+        $request = getFriendsFavoritePosts($query);
         break;
     case "6":
-        echo ("<h1>Get User's Friends' Subscribed Subsaidits  " . $query . "</h1>");
-        $returntype = "subsaidits";
+        echo ("<h1>Get User's Friends' Subscribed Subsaidits, Query:" . $query . "</h1>");
+        $returntype = "subsaiddits";
+        $request = getFriendsSubsaidits($query);
         break;
     case "7":
         echo ("<h1>All Users</h1>");
@@ -125,7 +145,7 @@ if($result = $sql_connection->query($request)){
                     echo "</tr>";
                 }
                 break;
-            case "subsaidits":
+            case "subsaiddits":
                 echo "
                 <tr>
                 <th>id</th>
@@ -155,9 +175,7 @@ if($result = $sql_connection->query($request)){
     echo "Failure";
 }
 
-// $sql_connection.close();
-// $result = getUserPosts($query);
-// $result = update_reputation($query);
+$sql_connection->close();
 
 ?>
 </body>

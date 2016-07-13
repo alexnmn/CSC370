@@ -3,46 +3,73 @@
 
 <head>
     <title>CSC 370 Project Home</title>
+    <script type="text/javascript">
+    function createTable() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("table").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "index.php", true);
+        xmlhttp.send();
+    }
+    </script>
+    <style>
+    table {
+        width: 100%;
+        max-width: 850px;
+        border-collapse: collapse;
+        margin: 5px;
+    }
+    
+    #table td,#table th {
+        border: 1px solid black;
+        padding: 5px;
+    }
+    </style>
 </head>
 
-<body>
-    <div>
-        <form action="login.php">
-            <div>
-                <span style="padding-right:10px">
-          Username: <input type="text" name="Username" value="Username">
-        </span>
-                <span>
-          Password: <input type="text" name="Password" value="Password">
-        </span>
-                <input type="submit" value="Login">
-            </div>
-        </form>
-    </div>
-    <h1>CSC 370 Page!!</h1>
-    <table style="width:100%; max-width:800px">
-    <tr>
-      <form id="form" action="generateTable.php">
-        <td>
-          <select name="t" style="padding-right:10px">
-            <option value="">Select</option>
-            <option value="1">Get User's Posts</option>
-            <option value="2">Get User's Friends' Posts</option>
-            <option value="3">Get User's Subscribed Subsaidits</option>
-            <option value="4">Get User's Favorite Posts</option>
-            <option value="5">Get User's Friends Favorite Posts</option>
-            <option value="6">Get User's Friends' Subscribed Subsaidits</option>
-            <option value="7">Get All Users</option>
-          </select>
-        </td>
-        <td>
-          <span>From User: <input type="text" name="q" value=""></span>
-          <input type="submit" value="Search"/>
-        </td>
-      </form>
-    </tr>
+<body onload="createTable()">
+    <h1>Saiddit</h1>
+    <table>
+        <tr>
+            <form action="login.php">
+                <td>
+                    Username:
+                    <input type="text" name="Username" value="Username" />
+                </td>
+                <td>
+                    Password:
+                    <input type="text" name="Password" value="Password" />
+                    <input type="submit" value="Login">
+                </td>
+            </form>
+        </tr>
+        <tr>
+            <form id="form" action="generateTable.php">
+                <td>
+                    Request:
+                    <select name="t" style="padding-right:10px">
+                        <option value="">Select</option>
+                        <option value="1">Get User's Posts</option>
+                        <option value="2">Get User's Friends' Posts</option>
+                        <option value="3">Get User's Subscribed Subsaidits</option>
+                        <option value="4">Get User's Favorite Posts</option>
+                        <option value="5">Get User's Friends Favorite Posts</option>
+                        <option value="6">Get User's Friends' Subscribed Subsaidits</option>
+                        <option value="7">Get All Users</option>
+                    </select>
+                </td>
+                <td>
+                    From User:
+                    <input type="text" name="q" value="" />
+                    <input type="submit" value="Search" />
+                </td>
+            </form>
+        </tr>
     </table>
-    <div id="txtHint"><b>Information will apear here!</div>
+    <table style="margin-top:10px" id="table"></table>
 </body>
 
 </html>

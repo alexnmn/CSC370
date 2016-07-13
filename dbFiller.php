@@ -71,7 +71,7 @@ function set_post_reaction($p_id,$u_id,$r_value){
 }
 
 function update_reputation($u_id){
-    echo("update_reputation");
+    return "UPDATE accounts SET reputation WHERE accounts.id=" . $u_id . ";"
 }
 
 function update_updown_votes($p_id){
@@ -96,10 +96,7 @@ switch($type){
         break;
 }
 
-// $result = getUserPosts($sql_connection, $query);
-// $result = update_reputation($query);
-
-$con.close();
+$sql_connection.close();
 ?>
 </body>
 </html>

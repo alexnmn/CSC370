@@ -1,0 +1,100 @@
+mysql> describe accounts;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| username   | varchar(20)  | NO   | UNI | NULL    |                |
+| reputation | int(11)      | YES  |     | 0       |                |
+| password   | varchar(255) | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> describe comment_reactions;
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| comment_id | int(11) | NO   | PRI | 0       |       |
+| user_id    | int(11) | NO   | PRI | 0       |       |
+| reaction   | int(11) | YES  |     | NULL    |       |
++------------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> describe comments;
++-------------+----------+------+-----+---------+----------------+
+| Field       | Type     | Null | Key | Default | Extra          |
++-------------+----------+------+-----+---------+----------------+
+| id          | int(11)  | NO   | PRI | NULL    | auto_increment |
+| create_time | datetime | NO   |     | NULL    |                |
+| text        | text     | YES  |     | NULL    |                |
+| post        | int(11)  | YES  |     | NULL    |                |
+| creator     | int(11)  | YES  |     | NULL    |                |
+| reply       | int(11)  | YES  |     | NULL    |                |
++-------------+----------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> describe favourite_posts;
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| user_id | int(11) | YES  |     | NULL    |       |
+| post_id | int(11) | YES  |     | NULL    |       |
++---------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> describe friends;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id_1  | int(11) | NO   | PRI | 0       |       |
+| id_2  | int(11) | NO   | PRI | 0       |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> describe post_reactions;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| post_id  | int(11) | NO   | PRI | 0       |       |
+| user_id  | int(11) | NO   | PRI | 0       |       |
+| reaction | int(11) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> describe posts;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| id            | int(11)      | NO   | PRI | NULL    | auto_increment |
+| text          | text         | NO   |     | NULL    |                |
+| time_pub      | datetime     | NO   |     | NULL    |                |
+| time_edit     | datetime     | YES  |     | NULL    |                |
+| title         | varchar(255) | NO   |     | NULL    |                |
+| url           | varchar(255) | YES  |     | NULL    |                |
+| upvotes       | int(11)      | YES  |     | NULL    |                |
+| downvotes     | int(11)      | YES  |     | NULL    |                |
+| creator       | int(11)      | YES  |     | NULL    |                |
+| subsaiddit_id | int(11)      | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> describe subsaiddits;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id          | int(11)     | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(50) | NO   | UNI | NULL    |                |
+| description | text        | YES  |     | NULL    |                |
+| creator     | int(11)     | YES  |     | NULL    |                |
+| is_default  | bit(1)      | YES  |     | b'0'    |                |
+| create_time | datetime    | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> describe subscribes;
++---------------+---------+------+-----+---------+-------+
+| Field         | Type    | Null | Key | Default | Extra |
++---------------+---------+------+-----+---------+-------+
+| user_id       | int(11) | YES  |     | NULL    |       |
+| subsaiddit_id | int(11) | YES  |     | NULL    |       |
++---------------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)

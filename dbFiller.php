@@ -100,6 +100,8 @@ function update_updown_votes($p_id){
 
 switch($type){
     case "1":
+        set_comment_reaction($c_id,$u_id,$value);
+        update_reputation($u_id);
         break;
     case "2":
         break;

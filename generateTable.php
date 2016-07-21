@@ -36,6 +36,8 @@ function getFriendsSubsaidits($user){
     return "SELECT DISTINCT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
 }
 
+
+
 $returntype = "";
 $request = "";
 switch($type){
@@ -73,6 +75,16 @@ switch($type){
         echo ("<h3>All Users</h3>");
         $request = getAllUsers();
         $returntype = "accounts";
+        break;
+    case "8":
+        echo ("<h3>Delete Post</h3>");
+        $request = deletePost();
+        $returntype = "Meow";
+        break;
+    case "9":
+        echo ("<h3>Query By Text</h3>");
+        $request = queryText();
+        $returntype = "posts";
         break;
 }
 
@@ -147,6 +159,9 @@ if($result = $sql_connection->query($request)){
                     echo "</tr>";
                 }
                 break;
+            case "Meow":
+                echo "<tr>
+                <th>Post deleted!!!</th></tr></table>"
         }
         echo "</table>";
     } else {

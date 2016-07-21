@@ -3,6 +3,7 @@
 
 <head>
     <title>CSC 370 Project Home</title>
+    <link rel="stylesheet" type = "text/css" href = "style.css">
     <script type="text/javascript">
     function createTable() {
         var xmlhttp = new XMLHttpRequest();
@@ -18,6 +19,8 @@
     function query(){
         var form = document.getElementById("form");
         var xmlhttp = new XMLHttpRequest();
+        var t = form.t.value;
+        var q = form.q.value;
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("query").innerHTML = xmlhttp.responseText;
@@ -51,35 +54,31 @@
     <form syle="align-content: right;" action="logout.php">
             <input type="submit" value="Logout">
     </form>
+    <div id="frame">
     <h1>Saiddit</h1>
-    <table>
-        <tr>
-            <form id="form" onsubmit="query();return false">
-                <td>
-                    Request:
-                    <select name="t" style="padding-right:10px">
-                        <option value="">Select</option>
-                        <option value="1">Get User's Posts</option>
-                        <option value="2">Get User's Friends' Posts</option>
-                        <option value="3">Get User's Subscribed Subsaidits</option>
-                        <option value="4">Get User's Favorite Posts</option>
-                        <option value="5">Get User's Friends Favorite Posts</option>
-                        <option value="6">Get User's Friends' Subscribed Subsaidits</option>
-                        <option value="7">Get All Users</option>
-                    </select>
-                </td>
-                <td>
-                    From User:
-                    <input type="text" name="q" value="" />
-                    <input type="submit" value="Search" />
-                </td>
-            </form>
-        </tr>
-    </table>
+    <form id="form" onsubmit="query();return false">
+        <p>
+            Request:
+            <select name="t" style="padding-right:10px">
+                <option value="">Select</option>
+                <option value="1">Get User's Posts</option>
+                <option value="2">Get User's Friends' Posts</option>
+                <option value="3">Get User's Subscribed Subsaidits</option>
+                <option value="4">Get User's Favorite Posts</option>
+                <option value="5">Get User's Friends Favorite Posts</option>
+                <option value="6">Get User's Friends' Subscribed Subsaidits</option>
+                <option value="7">Get All Users</option>
+            </select>
+        </p>
+            Query Paramater:
+            <input type="text" name="q" value="" />
+            <input type="submit" value="Search" />
+    </form>
     <h2>Query Response</h2>
     <div style="margin-top:10px" id="query"></div>
     <h2>Top Posts</h2>
     <table style="margin-top:10px" id="table"></table>
+    </div>
 </body>
 
 </html>

@@ -8,6 +8,7 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log("index");
                 document.getElementById("table").innerHTML = xmlhttp.responseText;
             }
         };
@@ -22,6 +23,7 @@
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                console.log("Query");
                 document.getElementById("query").innerHTML = xmlhttp.responseText;
             }
         };
@@ -83,7 +85,7 @@
                     </select>
                 </td>
                 <td>
-                    From User:
+                    Query Paramater:
                     <input type="text" name="q" value="" />
                     <input type="submit" value="Search" />
                 </td>

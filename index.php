@@ -10,6 +10,7 @@ $request = getTopPosts();
 if($result = $sql_connection->query($request)){
     if ($result->num_rows > 0) {
     	echo "
+        <table>
         <tr>
         <th>id</th>
         <th>text</th>
@@ -34,7 +35,7 @@ if($result = $sql_connection->query($request)){
             echo "<td>" . $row['downvotes'] . "</td>";
             echo "<td>" . $row['creator'] . "</td>";
             echo "<td>" . $row['subsaiddit_id'] . "</td>";
-            echo "</tr>";
+            echo "</tr></table>";
         }
     }else{
     	echo "0 Search Results";

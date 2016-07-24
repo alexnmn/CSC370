@@ -36,6 +36,14 @@ function getFriendsSubsaidits($user){
     return "SELECT DISTINCT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
 }
 
+function deletePost($p_id){
+    
+}
+
+function queryText($query){
+    
+}
+
 
 
 $returntype = "";

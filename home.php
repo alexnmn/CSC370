@@ -14,13 +14,12 @@ if($_COOKIE['id']){
         	echo "
             <tr>
             <th>id</th>
-            <th>text</th>
+            <th style='width:150px'>text</th>
             <th>time_pub</th>
-            <th>time_edit</th>
-            <th>title</th>
+            <th style='width:150px'>title</th>
             <th>url</th>
-            <th>upvotes</th>
-            <th>downvotes</th>
+            <th>up</th>
+            <th>down</th>
             <th>creator</th>
             <th>subsaiddit_id</th>
             </tr>";
@@ -29,7 +28,6 @@ if($_COOKIE['id']){
                 echo "<td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['text'] . "</td>";
                 echo "<td>" . $row['time_pub'] . "</td>";
-                echo "<td>" . $row['time_edit'] . "</td>";
                 echo "<td>" . $row['title'] . "</td>";
                 echo "<td>" . $row['url'] . "</td>";
                 echo "<td>" . $row['upvotes'] . "</td>";

@@ -20,7 +20,7 @@ function getFriendsPosts($user){
     return "SELECT posts.* FROM posts,friends,accounts WHERE((posts.creator=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.creator=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "')) ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
-function getUserSubsaidits($user){
+function getUserSubsaiddits($user){
     return "SELECT subsaiddits.* FROM subscribes, subsaiddits,accounts WHERE(subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=accounts.id AND accounts.username = '" . $user . "');";
 }
 
@@ -32,18 +32,22 @@ function getFriendsFavoritePosts($user){
     return "SELECT DISTINCT posts.* FROM posts,friends,accounts,favourite_posts WHERE((posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (posts.id=favourite_posts.post_id AND favourite_posts.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "')) ORDER BY (posts.upvotes-posts.downvotes) DESC;";
 }
 
-function getFriendsSubsaidits($user){
+function getFriendsSubsaiddits($user){
     return "SELECT DISTINCT subsaiddits.* FROM subsaiddits,friends,accounts,subscribes WHERE((subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_1 AND friends.id_2=accounts.id AND accounts.username = '" . $user . "') OR (subsaiddits.id=subscribes.subsaiddit_id AND subscribes.user_id=friends.id_2 AND friends.id_1=accounts.id AND accounts.username = '" . $user . "'));";
 }
 
 function deletePost($p_id){
-    
+    deleteComments($p_id);
+    return "DELETE FROM posts WHERE id=".$p_id.";";
 }
 
-function queryText($query){
-    
+function queryText($str){
+    return "SELECT * FROM posts WHERE text LIKE '%" .$str. "%';";
 }
 
+function deleteComments($p_id){
+    return $sql_connection->query("DELETE FROM comments WHERE post=".$p_id.";");
+}
 
 
 $returntype = "";
@@ -60,9 +64,9 @@ switch($type){
         $returntype = "posts";
         break;
     case "3":
-        echo ("<h3>Get User's Subscribed Subsaidits, Query:" . $query . "</h3>");
+        echo ("<h3>Get User's Subscribed Subsaiddits, Query:" . $query . "</h3>");
         $returntype = "subsaiddits";
-        $request = getUserSubsaidits($query);
+        $request = getUserSubsaiddits($query);
         break;
     case "4":
         echo ("<h3>Get User's Favorite Posts, Query:" . $query . "</h3>");
@@ -75,9 +79,9 @@ switch($type){
         $request = getFriendsFavoritePosts($query);
         break;
     case "6":
-        echo ("<h3>Get User's Friends' Subscribed Subsaidits, Query:" . $query . "</h3>");
+        echo ("<h3>Get User's Friends' Subscribed Subsaiddits, Query:" . $query . "</h3>");
         $returntype = "subsaiddits";
-        $request = getFriendsSubsaidits($query);
+        $request = getFriendsSubsaiddits($query);
         break;
     case "7":
         echo ("<h3>All Users</h3>");
@@ -86,12 +90,12 @@ switch($type){
         break;
     case "8":
         echo ("<h3>Delete Post</h3>");
-        $request = deletePost();
+        $request = deletePost($query);
         $returntype = "Meow";
         break;
     case "9":
         echo ("<h3>Query By Text</h3>");
-        $request = queryText();
+        $request = queryText($query);
         $returntype = "posts";
         break;
 }
@@ -118,16 +122,14 @@ if($result = $sql_connection->query($request)){
                 }
                 break;
             case "posts":
-                echo "
-                <tr>
+                echo "<tr>
                 <th>id</th>
-                <th>text</th>
+                <th style='width:150px'>text</th>
                 <th>time_pub</th>
-                <th>time_edit</th>
-                <th>title</th>
+                <th style='width:150px'>title</th>
                 <th>url</th>
-                <th>upvotes</th>
-                <th>downvotes</th>
+                <th>up</th>
+                <th>down</th>
                 <th>creator</th>
                 <th>subsaiddit_id</th>
                 </tr>";
@@ -136,7 +138,6 @@ if($result = $sql_connection->query($request)){
                     echo "<td>" . $row['id'] . "</td>";
                     echo "<td>" . $row['text'] . "</td>";
                     echo "<td>" . $row['time_pub'] . "</td>";
-                    echo "<td>" . $row['time_edit'] . "</td>";
                     echo "<td>" . $row['title'] . "</td>";
                     echo "<td>" . $row['url'] . "</td>";
                     echo "<td>" . $row['upvotes'] . "</td>";
@@ -169,7 +170,7 @@ if($result = $sql_connection->query($request)){
                 break;
             case "Meow":
                 echo "<tr>
-                <th>Post deleted!!!</th></tr></table>"
+                <th>Post deleted!!!</th></tr></table>";
         }
         echo "</table>";
     } else {
